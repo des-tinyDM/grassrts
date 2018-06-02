@@ -1,0 +1,1 @@
+SELECT campaign_id, name, organization, orglogo, type, scope, description FROM campaigns WHERE active = true;

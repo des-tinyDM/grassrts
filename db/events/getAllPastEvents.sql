@@ -1,0 +1,1 @@
+SELECT * FROM events WHERE campaign_id = $1 AND endtime < current_date ORDER BY starttime ASC;
