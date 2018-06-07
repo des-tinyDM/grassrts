@@ -110,7 +110,7 @@ passport.deserializeUser((user, done) => {
 app.get(
   `/auth`,
   passport.authenticate("auth0", {
-    successRedirect: "http://localhost:3000/",
+    successRedirect: "http://localhost:3001/",
     failureRedirect: "http://localhost:3001/auth"
   })
 );
@@ -137,6 +137,11 @@ app.post(`/api/users/notes`, addNote);
 
 app.put(`/api/submitprofile/:user_id`, submitProfile);
 app.put(`/api/campaigns/edit`, updateCampaign);
+
+const path = require("path");
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../build/index.html"));
+});
 
 app.listen(port, () => {
   console.log(`Comin' at you from ${port}`);
