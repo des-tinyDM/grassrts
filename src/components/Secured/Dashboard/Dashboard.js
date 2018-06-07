@@ -10,6 +10,7 @@ import Profile from "../Profile/Profile";
 import FullEventPage from "../Events/FullEventPage";
 import DataPage from "../Data/DataPage";
 import ContactsPage from "../Contacts/ContactsPage";
+import UserProfile from "../Profile/UserProfile";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class Dashboard extends Component {
   render() {
     return (
       <Switch>
+        <Route path="/user/:user_id" render={() => <UserProfile />} />
         <Route path="/contacts" render={() => <ContactsPage />} />
         <Route path="/data" render={() => <DataPage />} />
         <Route
@@ -66,4 +68,9 @@ const mapStateToProps = state => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, {})(Dashboard));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {}
+  )(Dashboard)
+);

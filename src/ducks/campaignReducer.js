@@ -2,6 +2,7 @@ import axios from "axios";
 
 const GET_CAMPAIGNS = "GET_CAMPAIGNS";
 const CREATE_CAMPAIGN = "CREATE_CAMPAIGN";
+const UPDATE_CAMPAIGN = "UPDATE_CAMPAIGN";
 const JOIN_CAMPAIGN = "JOIN_CAMPAIGN";
 const GET_JOINED = "GET_JOINED";
 
@@ -53,7 +54,36 @@ export function submitCampaign(
       .catch(err => err)
   };
 }
-
+export function updateCampaign(
+  campaign_id,
+  name,
+  organization,
+  orglogo,
+  description,
+  type,
+  scope,
+  vrGoal,
+  commitGoal
+) {
+  return {
+    type: UPDATE_CAMPAIGN,
+    payload: axios
+      .put(`/api/campaigns/edit`, {
+        campaign_id,
+        name,
+        organization,
+        orglogo,
+        description,
+        type,
+        scope,
+        vrGoal,
+        commitGoal
+      })
+      .then(joined => {
+        return joined.data;
+      })
+  };
+}
 export function joinCampaign(campaign_id, userid, role) {
   return {
     type: JOIN_CAMPAIGN,
@@ -77,6 +107,7 @@ export default function campaignReducer(state = initialState, action) {
     case `${CREATE_CAMPAIGN}_PENDING`:
     case `${JOIN_CAMPAIGN}_PENDING`:
     case `${GET_JOINED}_PENDING`:
+    case `${UPDATE_CAMPAIGN}_PENDING`:
       return Object.assign({}, state, { isLoading: true });
 
       return Object.assign({}, state, { isLoading: true });
@@ -100,6 +131,12 @@ export default function campaignReducer(state = initialState, action) {
         isLoading: false,
         joined: action.payload.data[0]
       });
+    case `${UPDATE_CAMPAIGN}_FULFILLED`:
+      return Object.assign({}, state, {
+        isLoading: false,
+        joined: action.payload
+      });
+
     default:
       return state;
   }

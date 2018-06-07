@@ -16,7 +16,8 @@ const passport = require("passport");
 const {
   getAllCampaigns,
   createCampaign,
-  getCampaignsJoined
+  getCampaignsJoined,
+  updateCampaign
 } = require(`${__dirname}/controllers/campaignController`);
 
 const {
@@ -29,12 +30,23 @@ const {
   getVolunteers,
   getContacts,
   getChartData,
-  addContact
+  addContact,
+  getProfile,
+  getOutcomesCommit,
+  getOutcomesVR
 } = require(`${__dirname}/controllers/dataController`);
 
-const { submitProfile } = require(`${__dirname}/controllers/userController`);
+const {
+  submitProfile,
+  addNote,
+  getNotes
+} = require(`${__dirname}/controllers/userController`);
 
-const { getEvents } = require(`${__dirname}/controllers/eventsController`);
+const {
+  getEvents,
+  getPastEvents,
+  getFutureEvents
+} = require(`${__dirname}/controllers/eventsController`);
 
 const port = 3001;
 
@@ -112,11 +124,19 @@ app.get(`/api/events`, getEvents);
 app.get(`/api/data/contacts/:campaign_id`, getContacts);
 app.get(`/api/data/volunteers`, getVolunteers);
 app.get(`/api/chart/data`, getChartData);
+app.get(`/api/profile/:user_id`, getProfile);
+app.get(`/api/events/past`, getPastEvents);
+app.get(`/api/events/future`, getFutureEvents);
+app.get(`/api/events/outcomes/vr`, getOutcomesVR);
+app.get(`/api/events/outcomes/commit`, getOutcomesCommit);
+app.get(`/api/users/notes/:user_id`, getNotes);
 
 app.post(`/api/campaigns/add`, createCampaign);
 app.post(`/api/data/contacts/add`, addContact);
+app.post(`/api/users/notes`, addNote);
 
 app.put(`/api/submitprofile/:user_id`, submitProfile);
+app.put(`/api/campaigns/edit`, updateCampaign);
 
 app.listen(port, () => {
   console.log(`Comin' at you from ${port}`);

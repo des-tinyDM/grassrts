@@ -3,7 +3,7 @@ const getVolunteers = (req, res) => {
   const { campaign_id, event_id } = req.query;
   console.log(req.query);
 
-  !event_id
+  !event_id || event_id === "undefined"
     ? db.data
         .getAllVols(campaign_id)
         .then(volList => {
@@ -116,9 +116,60 @@ const addContact = (req, res) => {
     });
 };
 
+const getProfile = (req, res) => {
+  const db = req.app.get("db");
+  console.log(req.body);
+  db.data
+    .getVolProfile(req.params.user_id)
+    .then(profile => {
+      res.status(200).json(profile);
+      console.log(`get vol prof:`, profile);
+    })
+    .catch(err => {
+      res.status(200).json(err);
+      console.log(err);
+    });
+};
+const getOutcomesVR = (req, res) => {
+  const db = req.app.get("db");
+  const { campaign_id, user_id } = req.query;
+  console.log(req.query);
+
+  db.data
+    .getOutcomeVR(campaign_id, user_id)
+    .then(vr => {
+      console.log(vr);
+      res.status(200).json(vr);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+      console.log(err);
+    });
+};
+
+const getOutcomesCommit = (req, res) => {
+  const db = req.app.get("db");
+  const { campaign_id, user_id } = req.query;
+  console.log(req.query);
+
+  db.data
+    .getOutcomeCommit(campaign_id, user_id)
+    .then(commit => {
+      console.log(commit);
+      res.status(200).json(commit);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+      console.log(err);
+    });
+};
+
 module.exports = {
   getVolunteers,
   getContacts,
   getChartData,
-  addContact
+  addContact,
+  getProfile,
+  getOutcomesCommit,
+  getOutcomesVR
 };

@@ -42,6 +42,38 @@ const submitProfile = (req, res) => {
       res.status(500).send(err);
     });
 };
+const addNote = (req, res) => {
+  const db = req.app.get("db");
+  const { user_id, written_by, event_id, note } = req.body;
+  db.user
+    .submitNote(user_id, written_by, event_id, note)
+    .then(notes => {
+      res.status(200).json(notes);
+      console.log(notes);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+};
+
+const getNotes = (req, res) => {
+  const db = req.app.get("db");
+
+  db.user
+    .getNotes(req.params.user_id)
+    .then(notes => {
+      res.status(200).json(notes);
+      console.log(notes);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+};
+
 module.exports = {
-  submitProfile
+  submitProfile,
+  addNote,
+  getNotes
 };

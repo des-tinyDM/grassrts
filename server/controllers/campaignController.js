@@ -64,8 +64,45 @@ const getCampaignsJoined = (req, res) => {
     });
 };
 
+const updateCampaign = (req, res) => {
+  const db = req.app.get("db");
+  const {
+    campaign_id,
+    name,
+    organization,
+    orglogo,
+    description,
+    type,
+    scope,
+    vrGoal,
+    commitGoal
+  } = req.body;
+  console.log(req.body);
+  db.campaign
+    .updateCampaign([
+      campaign_id,
+      name,
+      organization,
+      orglogo,
+      description,
+      type,
+      scope,
+      vrGoal,
+      commitGoal
+    ])
+    .then(campaign => {
+      res.status(200).json(campaign);
+      console.log(campaign);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+};
+
 module.exports = {
   getAllCampaigns,
   createCampaign,
-  getCampaignsJoined
+  getCampaignsJoined,
+  updateCampaign
 };

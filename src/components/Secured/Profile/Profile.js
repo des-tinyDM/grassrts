@@ -476,7 +476,10 @@ const mapStateToProps = state => {
     user: state.userReducer.user
   };
 };
-export default connect(mapStateToProps, { submitProfile, getUser })(Profile);
+export default connect(
+  mapStateToProps,
+  { submitProfile, getUser }
+)(Profile);
 
 const ProfileForm = styled.form`
   position: absolute;
@@ -532,6 +535,8 @@ const ProfileInputSection = styled.div`
     padding: 3px 0px 3px 3px;
     margin: 5px 1px 3px 0px;
     border: 1px solid #dddddd;
+    width: 48%;
+    border-radius: 4px;
   }
   & input:focus,
   textarea:focus {

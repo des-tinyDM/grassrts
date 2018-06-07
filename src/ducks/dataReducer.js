@@ -2,17 +2,21 @@ import axios from "axios";
 
 const initialState = {
   volList: [],
-  isLoading: [],
-  getContacts: [],
-  chartData: [],
+  volProfile: {},
+  isLoading: false,
+  contacts: [],
+  vrData: [],
+  // chartData: [],
   userChart: []
 };
 
 const GET_VOLS = "GET_VOLS";
+const GET_USER_PROFILE = "GET_USER_PROFILE";
 const GET_CONTACTS = "GET_CONTACTS";
 const GET_CHART = "GET_CHART";
 const USER_CHART = "USER_CHART";
 const ADD_CONTACT = "ADD_CONTACT";
+const GET_VR = "GET_VR";
 
 export function getVols(campaign_id, event_id) {
   return {
@@ -30,6 +34,21 @@ export function getVols(campaign_id, event_id) {
       })
   };
 }
+export function getVolProfile(user_id) {
+  return {
+    type: GET_USER_PROFILE,
+    payload: axios
+      .get(`/api/profile/${user_id}`)
+      .then(volProfile => {
+        return volProfile.data[0];
+        console.log(`get a users Profile:`, volProfile);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  };
+}
+
 export function getContacts(campaign_id, event_id) {
   return {
     type: "GET_CONTACTS",
@@ -67,6 +86,7 @@ export function getUserChart(user_id) {
     })
   };
 }
+
 export function addContact(
   firstName,
   lastName,
@@ -113,12 +133,18 @@ export default function dataReducer(state = initialState, action) {
     case `${GET_CHART}_PENDING`:
     case `${USER_CHART}_PENDING`:
     case `${ADD_CONTACT}_PENDING`:
+    case `${GET_USER_PROFILE}_PENDING`:
       return Object.assign({}, state, { isLoading: true });
 
     case `${GET_VOLS}_FULFILLED`:
       return Object.assign({}, state, {
         isLoading: false,
         volList: action.payload
+      });
+    case `${GET_USER_PROFILE}_FULFILLED`:
+      return Object.assign({}, state, {
+        isLoading: false,
+        volProfile: action.payload
       });
     case `${GET_CONTACTS}_FULFILLED`:
       return Object.assign({}, state, {

@@ -2,6 +2,8 @@ import axios from "axios";
 
 const GET_USER = "GET_USER";
 const SUBMIT_PROFILE = "SUBMIT_PROFILE";
+const ADD_NOTE = "ADD_NOTE";
+const GET_NOTES = "GET_NOTES";
 
 export function getUser() {
   return {
@@ -52,8 +54,32 @@ export function submitProfile(
       .catch(err => console.log(`submitProfile`, err))
   };
 }
+
+export function getNotes(user_id) {
+  return {
+    type: GET_NOTES,
+    payload: axios.get(`/api/users/notes/${user_id}`).then(notes => {
+      return notes.data;
+      console.log(notes);
+    })
+  };
+}
+export function addNote(user_id, written_by, event_id, note) {
+  return {
+    type: GET_NOTES,
+    payload: axios
+      .post(`/api/users/notes`, { user_id, written_by, event_id, note })
+      .then(notes => {
+        return notes.data;
+        console.log(notes);
+      })
+  };
+}
+
 const initialState = {
-  user: {}
+  user: {},
+  notes: [],
+  isLoading: false
 };
 
 export default function userReducer(state = initialState, action) {
@@ -70,6 +96,19 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         error: "ERROR"
+      };
+    case `${GET_NOTES}_PENDING`:
+    case `${ADD_NOTE}_PENDING`:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case `${GET_NOTES}_FULFILLED`:
+    case `${ADD_NOTE}_FULFILLED`:
+      return {
+        ...state,
+        notes: action.payload,
+        isLoading: false
       };
 
     default:

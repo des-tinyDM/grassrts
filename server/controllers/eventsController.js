@@ -68,6 +68,39 @@ const getEvents = (req, res) => {
   //     res.status(500).json(err);
   //   });
 };
+
+const getPastEvents = (req, res) => {
+  const db = req.app.get("db");
+  const { user_id, campaign_id } = req.query;
+  db.events
+    .getEventsScheduledCompleted(campaign_id, user_id)
+    .then(events => {
+      res.status(200).json(events);
+      console.log(`past user events for prof`, events);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+      console.log(`past user events for prof`, err);
+    });
+};
+
+const getFutureEvents = (req, res) => {
+  const db = req.app.get("db");
+  const { user_id, campaign_id } = req.query;
+  db.events
+    .getEventsScheduled(campaign_id, user_id)
+    .then(events => {
+      res.status(200).json(events);
+      console.log(`future user events for prof`, events);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+      console.log(`future user events for prof`, err);
+    });
+};
+
 module.exports = {
-  getEvents
+  getPastEvents,
+  getEvents,
+  getFutureEvents
 };
