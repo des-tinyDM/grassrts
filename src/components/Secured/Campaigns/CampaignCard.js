@@ -7,8 +7,8 @@ const Campaign = styled.div`
   align-items: center;
   width: 80vw;
   min-height: 40vh;
-  max-height: 60vh;
-  margin: 5vh 10vw;
+  max-height: 65vh;
+  margin: 2.5vh 0;
   text-align: center;
   border: 1px solid grey;
   padding: 1vh 5vw;

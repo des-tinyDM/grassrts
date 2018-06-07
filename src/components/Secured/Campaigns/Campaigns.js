@@ -30,8 +30,8 @@ class Campaigns extends Component {
     });
     console.log(`Campaigns >>`, this.props);
     return (
-      <PageContainer>
-        <div>
+      <PageContainer id="Campaigns">
+        <div className="campaignList">
           {!this.props.joined && (
             <button onClick={() => this.createSwitch()}>
               Create A Campaign
@@ -45,7 +45,14 @@ class Campaigns extends Component {
               />
             )}
           {!this.props.joined && !this.state.showCreate && campaignList}
-          {this.props.joined && <FullCampaignPage joined={this.props.joined} />}
+        </div>
+        <div className="fullCampaign">
+          {this.props.joined && (
+            <FullCampaignPage
+              contacts={this.props.contacts}
+              joined={this.props.joined}
+            />
+          )}
         </div>
       </PageContainer>
     );

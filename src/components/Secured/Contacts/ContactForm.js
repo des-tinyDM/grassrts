@@ -50,6 +50,16 @@ class ContactForm extends Component {
   render() {
     console.log(this.props);
     let { isLoading } = this.props;
+
+    let { pastEvents } = this.props;
+    let eventsDropdown = pastEvents.map((e, i) => {
+      return (
+        <option value={e.event_id}>
+          {e.event_name} - {e.starttime}
+        </option>
+      );
+    });
+
     return (
       <div>
         {isLoading ? (
@@ -58,6 +68,18 @@ class ContactForm extends Component {
           <AddContactForm onSubmit={e => this.submitContact(e)}>
             <h1>Add New Contact</h1>
             <p>First Name</p>
+            <select
+              name="event_id"
+              value={this.state.event_id}
+              className="event_id"
+              onChange={this.campaignInput}
+              size="3"
+            >
+              this.props.pastEvents
+              <option value="National">National</option>
+              <option value="Statewide">Statewide</option>
+              <option value="Local">Local</option>
+            </select>
             <input
               name="firstName"
               value={this.state.firstName}
@@ -114,6 +136,7 @@ class ContactForm extends Component {
               onChange={this.contactInput}
               type="date"
             />
+            <p>Allows Contact</p>
             <input
               type="checkbox"
               checked={this.state.allows_contact}
@@ -121,6 +144,7 @@ class ContactForm extends Component {
               name="allows_contact"
             />
             <input type="submit" value="Add Contact" />
+            {eventsDropdown}
           </AddContactForm>
         )}
       </div>
@@ -131,7 +155,8 @@ const mapStateToProps = state => {
   return {
     contacts: state.dataReducer.contacts,
     user: state.userReducer.user,
-    events: state.eventsReducer.events
+    events: state.eventsReducer.events,
+    pastEvents: state.eventsReducer.events
   };
 };
 

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import Chart from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import styled from "styled-components";
 
 import { PageContainer } from "../../styled/PageContainer";
 import { getContacts } from "../../../ducks/dataReducer";
@@ -15,18 +16,43 @@ class DataPage extends Component {
   }
 
   componentDidMount() {
-    this.props.getContacts();
+    this.props.getContacts(this.props.joined.campaign_id);
   }
   render() {
-    return <div />;
+    let contacts = this.props.contacts.map((contact, i) => {
+      return (
+        <Contacts>
+          <h2>
+            {contact.first_name} {contact.last_name}
+          </h2>
+          <p>{contact.phone}</p>
+          <p>{contact.email}</p>
+        </Contacts>
+      );
+    });
+    return (
+      <PageContainer>
+        <div className="contactsContainer">
+          <h1>Contacts:</h1>
+          {contacts}
+        </div>
+      </PageContainer>
+    );
   }
 }
 const mapStateToProps = state => {
   return {
-    contacts: state.dataReducer.contacts
+    contacts: state.dataReducer.contacts,
+    joined: state.campaignReducer.joined
   };
 };
 export default connect(
   mapStateToProps,
   { getContacts }
 )(DataPage);
+
+const Contacts = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 30vw;
+`;

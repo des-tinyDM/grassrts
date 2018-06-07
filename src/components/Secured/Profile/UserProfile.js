@@ -109,6 +109,9 @@ class UserProfile extends Component {
           </h4>
           <p>{note.note}</p>
           <p>-{note.writtenby_name}</p>
+          <button onClick={() => console.log(`deleting ${note.id}`)}>
+            Delete Note
+          </button>
         </div>
       );
     });

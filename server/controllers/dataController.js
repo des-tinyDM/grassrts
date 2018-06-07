@@ -30,28 +30,28 @@ const getContacts = (req, res) => {
   const { campaign_id } = req.params;
   const { event_id } = req.query;
 
-  console.log(`getting contacts...`);
-  !event_id
-    ? db.data
-        .getContactData(campaign_id)
-        .then(contacts => {
-          console.log(`getting Contact Data`, contacts);
-          res.status(200).json(contacts);
-        })
-        .catch(err => {
-          console.log(`Getting Contact Data`, err);
-          res.status(500).json(err);
-        })
-    : db.data
-        .getEventContacts(event_id)
-        .then(contacts => {
-          console.log(`getting event contacts:`, contacts);
-          res.status(200).json(contacts);
-        })
-        .catch(err => {
-          console.log(`Getting event contacts:`, err);
-          res.status(500).json(err);
-        });
+  console.log(`getting contacts...`, req.params);
+
+  db.data
+    .getContactData(campaign_id)
+    .then(contacts => {
+      console.log(`getting Contact Data`, contacts);
+      res.status(200).json(contacts);
+    })
+    .catch(err => {
+      console.log(`Getting Contact Data`, err);
+      res.status(500).json(err);
+    });
+  // : db.data
+  //     .getEventContacts(event_id)
+  //     .then(contacts => {
+  //       console.log(`getting event contacts:`, contacts);
+  //       res.status(200).json(contacts);
+  //     })
+  //     .catch(err => {
+  //       console.log(`Getting event contacts:`, err);
+  //       res.status(500).json(err);
+  //     });
 };
 const getChartData = (req, res) => {
   const db = req.app.get("db");
