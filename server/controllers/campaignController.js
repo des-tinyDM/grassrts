@@ -24,7 +24,7 @@ const createCampaign = (req, res) => {
     description,
     user_id
   } = req.body;
-
+  console.log(req.body);
   db.campaign
     .createCampaign([
       name,
@@ -38,7 +38,7 @@ const createCampaign = (req, res) => {
     .then(response => {
       db.campaign
         .setCampaignAdmin([response[0].campaign_id, user_id])
-        .then(response => {
+        .then(() => {
           console.log(response);
           res.status(200).json(response);
         });

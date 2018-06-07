@@ -9,6 +9,7 @@ import EventsPage from "../Events/EventsPage";
 import Profile from "../Profile/Profile";
 import FullEventPage from "../Events/FullEventPage";
 import DataPage from "../Data/DataPage";
+import ContactsPage from "../Contacts/ContactsPage";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -17,9 +18,9 @@ class Dashboard extends Component {
   }
   componentDidMount() {}
   render() {
-    console.log(this.props);
     return (
       <Switch>
+        <Route path="/contacts" render={() => <ContactsPage />} />
         <Route path="/data" render={() => <DataPage />} />
         <Route
           exact

@@ -11,8 +11,9 @@ import Tech from "./components/LoggedOut/Technology/Tech";
 import AccessibleNav from "./components/Nav/AccessibleNav";
 import Dashboard from "./components/Secured/Dashboard/Dashboard";
 import { getUser } from "./ducks/userReducer";
-import { getJoinedCampaign } from "./ducks/campaignReducer";
+import { getJoinedCampaign, getAllCampaigns } from "./ducks/campaignReducer";
 import { connect } from "react-redux";
+import Footer from "./components/LoggedOut/Footer";
 
 class App extends Component {
   constructor() {
@@ -29,11 +30,15 @@ class App extends Component {
     this.props.getUser().then(response => {
       this.props.user
         ? this.props.getJoinedCampaign(response.value.user_id)
-        : null;
+        : this.props.getAllCampaigns();
     });
   }
   render() {
     // console.log(`APP.js props`, this.props);
+    let logoDisplay = this.props.campaignsList.map((e, i) => {
+      return <img src={e.orglogo} />;
+    });
+
     return (
       <div
         className="App"
@@ -59,18 +64,26 @@ class App extends Component {
         <Header />
         <AccessibleNav />
         <Content>
-          <Route path="/contact" component={Contact} />
-          <Route path="/tech" component={Tech} />
-          <Route
-            path="/"
-            render={() =>
-              this.props.user ? (
-                <Dashboard user={this.props.user} joined={this.props.joined} />
-              ) : (
-                <LandingPage user={this.props.user} />
-              )
-            }
-          />
+          <Switch>
+            <Route path="/contact" component={Contact} />
+            <Route path="/tech" component={Tech} />
+            <Route
+              path="/"
+              render={() =>
+                this.props.user ? (
+                  <Dashboard
+                    user={this.props.user}
+                    joined={this.props.joined}
+                  />
+                ) : (
+                  <LandingPage
+                    user={this.props.user}
+                    campaignsList={this.props.campaignsList}
+                  />
+                )
+              }
+            />
+          </Switch>
         </Content>
         {this.state.navOpen ? (
           <CloseDiv onClick={() => this.setState({ navOpen: false })} />
@@ -83,12 +96,16 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     user: state.userReducer.user,
-    joined: state.campaignReducer.joined
+    joined: state.campaignReducer.joined,
+    campaignsList: state.campaignReducer.campaignsList
   };
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getUser, getJoinedCampaign })(App)
+  connect(
+    mapStateToProps,
+    { getUser, getJoinedCampaign, getAllCampaigns }
+  )(App)
 );
 
 const NavComponent = styled.div`
@@ -118,7 +135,7 @@ const NavToggleBtn = styled.div`
   height: 30px;
   width: 48px;
   position: absolute;
-  top: 2vh;
+  top: 1.1vh;
   right: 1vw;
   padding: 0 0px;
   display: flex;
@@ -126,6 +143,10 @@ const NavToggleBtn = styled.div`
   align-items: center;
   z-index: 100;
   transition: all 1s linear;
+
+  @media only screen and (min-width: 1224px) {
+    top: 2.25vh;
+  }
 
   &.openMenu span.middle {
     opacity: 0;

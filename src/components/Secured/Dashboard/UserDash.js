@@ -36,7 +36,6 @@ const UserDash = props => {
           <h2>
             {props.joined.name} {props.joined.role}
           </h2>
-          {/* <UserChart /> */}
         </div>
       ) : (
         <DashText>
@@ -47,6 +46,8 @@ const UserDash = props => {
           </h2>
         </DashText>
       )}
+
+      {/* {this.props.joined.role === "Admin" ? <h1>Admin</h1> : <h1>Volunteer</h1>} */}
     </PageContainer>
   );
 };

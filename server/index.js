@@ -28,7 +28,8 @@ const {
 const {
   getVolunteers,
   getContacts,
-  getChartData
+  getChartData,
+  addContact
 } = require(`${__dirname}/controllers/dataController`);
 
 const { submitProfile } = require(`${__dirname}/controllers/userController`);
@@ -48,6 +49,7 @@ massive(process.env.CONNECTION_STRING)
 app.use(json());
 app.use(cors());
 
+//Use sessions first for passport!
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -64,7 +66,7 @@ app.use(passport.session());
 passport.use(strategy);
 
 passport.serializeUser((user, done) => {
-  // console.log(user);
+  console.log(user);
   app
     .get("db")
     .auth.getUserByAuthID(user.id)
@@ -110,6 +112,9 @@ app.get(`/api/events`, getEvents);
 app.get(`/api/data/contacts/:campaign_id`, getContacts);
 app.get(`/api/data/volunteers`, getVolunteers);
 app.get(`/api/chart/data`, getChartData);
+
+app.post(`/api/campaigns/add`, createCampaign);
+app.post(`/api/data/contacts/add`, addContact);
 
 app.put(`/api/submitprofile/:user_id`, submitProfile);
 

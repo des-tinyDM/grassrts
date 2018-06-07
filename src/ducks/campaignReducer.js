@@ -24,11 +24,28 @@ export function getAllCampaigns() {
   };
 }
 
-export function createCampaign() {
+export function submitCampaign(
+  name,
+  organization,
+  orglogo,
+  description,
+  type,
+  scope,
+  user_id
+) {
+  console.log(name, organization, orglogo, description, type, scope, user_id);
   return {
     type: CREATE_CAMPAIGN,
     payload: axios
-      .get(`/api/campaigns/add`)
+      .post(`/api/campaigns/add`, {
+        name,
+        organization,
+        orglogo,
+        description,
+        type,
+        scope,
+        user_id
+      })
       .then(response => {
         console.log(response);
         return response.data;
@@ -83,68 +100,6 @@ export default function campaignReducer(state = initialState, action) {
         isLoading: false,
         joined: action.payload.data[0]
       });
-    // case `${GET_EVENTS}_FULFILLED`:
-    //   return Object.assign({}, state, {
-    //     isLoading: false,
-    //     events: action.payload
-    //   });
-    // case `${GET_FUTURE_EVENTS}_FULFILLED`:
-    //   return Object.assign({}, state, {
-    //     futureEvents: action.payload
-    //   });
-    // case `${GET_NEWS}_FULFILLED`:
-    //   return Object.assign({}, state, {
-    //     isLoading: false,
-    //     news: action.payload
-    //   });
-    // case UPDATE_CAMPAIGN_NAME:
-    //   return Object.assign({}, state, { name: action.payload });
-
-    // case UPDATE_CAMPAIGN_DESCRIPTION:
-    //   return Object.assign({}, state, { description: action.payload });
-
-    // case UPDATE_CAMPAIGN_ORGANIZATION:
-    //   return Object.assign({}, state, { organization: action.payload });
-
-    // case UPDATE_CAMPAIGN_SCOPE:
-    //   return Object.assign({}, state, { scope: action.payload });
-
-    // case UPDATE_CAMPAIGN_TYPE:
-    //   return Object.assign({}, state, { type: action.payload });
-
-    // case UPDATE_CAMPAIGN_ORGLOGO:
-    //   return Object.assign({}, state, { orglogo: action.payload });
-    // case `${SUBMIT_CAMPAIGN}_PENDING`:
-    // case `${SCHEDULE_USER_AS_VOL}_PENDING`:
-    //   return Object.assign({}, state, { isSubmitting: true });
-    // case `${SUBMIT_CAMPAIGN}_FULFILLED`:
-    //   console.log(action);
-    //   return Object.assign({}, state, {
-    //     isSubmitting: false,
-    //     campaigns: action.payload.data
-    //   });
-
-    // case `${CREATE_EVENT}_FULFILLED`:
-    //   return Object.assign({}, state, { events: action.payload.data });
-    // case `${UPDATE_CAMPAIGN_INFO}_FULFILLED`:
-    //   return Object.assign({}, state, { campaigns: action.payload.data });
-    // case `${GET_JOINED}_FULFILLED`:
-    //   return Object.assign({}, state, { joined: action.payload });
-    // case `${GET_SCHEDULED}_FULFILLED`:
-    //   return Object.assign({}, state, { scheduled: action.payload });
-    // case `${GET_USER_ROLE}_FULFILLED`:
-    //   return Object.assign({}, state, { role: action.payload });
-    // case `${SCHEDULE_USER_AS_VOL}_FULFILLED`:
-    //   console.log(action, action.payload);
-    //   return Object.assign({}, state, {
-    //     isSubmitting: false,
-    //     scheduled: action.payload
-    //   });
-    // case `${GET_VOLS_SCHEDULED}_FULFILLED`:
-    //   console.log(action.type, action.payload);
-    //   return Object.assign({}, state, {
-    //     volsScheduled: action.payload
-    //   });
     default:
       return state;
   }

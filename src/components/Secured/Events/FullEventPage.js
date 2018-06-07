@@ -5,6 +5,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { connect } from "react-redux";
 import { getVols } from "../../../ducks/dataReducer";
+import mapImage from "./mapImage.png";
 
 const FullEvent = styled.div`
 width:100vw;
@@ -18,7 +19,6 @@ width:100vw;
     width: 100vw;
     margin:0 0vw;
     height: 92vh;
-
     display:flex;
     justify-content:space-between
 `;
@@ -119,7 +119,7 @@ const LocationContainer = styled.div`
   }
   & div.MapContainer {
     border: 1px solid grey;
-    background-image: url("https://www.jqueryscript.net/images/Easy-Customizable-jQuery-Google-Maps-Plugin-googlemaps-js.jpg");
+    background-image: url(mapImage);
     position: absolute;
     right: 10vw;
     bottom: 5vh;

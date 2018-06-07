@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import { EventCard } from "./Events";
 import { getEvents } from "../../../ducks/eventsReducer";
+import { PageContainer } from "../../styled/PageContainer";
 
 class EventsPage extends Component {
   constructor(props) {
@@ -29,23 +30,29 @@ class EventsPage extends Component {
       )
     );
   }
+
   render() {
     let { events } = this.props;
 
     let eventArr = events.map((e, i) => {
       return (
-        <EventCard
-          key={i}
-          event_name={e.event_name}
-          start={e.starttime}
-          event_id={e.event_id}
-        />
+        <div>
+          <h1>Upcoming Events:</h1>
+
+          <EventCard
+            key={i}
+            event_name={e.event_name}
+            start={e.starttime}
+            event_id={e.event_id}
+          />
+        </div>
       );
     });
     console.log(`Events Page:`, this.props, this.state);
     return (
-      <div>
+      <PageContainer>
         <span>Scheduled Events</span>
+
         <input
           name="scheduled"
           type="checkbox"
@@ -81,10 +88,8 @@ class EventsPage extends Component {
           )}
         {!events[0] &&
           !this.state.scheduled &&
-          !this.state.completed && (
-            <h1>You've never volunteered! Sign up for your first event!</h1>
-          )}
-      </div>
+          !this.state.completed && <h1>There are no upcoming events.</h1>}
+      </PageContainer>
     );
   }
 }

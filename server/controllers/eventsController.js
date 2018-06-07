@@ -4,46 +4,6 @@ const getEvents = (req, res) => {
 
   console.log(req.query);
 
-  //get all events, past and future
-  //
-  //   //get future events that the vol is scheduled for
-  // } else if (scheduled === "true" && completed === "false") {
-  //   db.events
-  //     .getEventsScheduled([campaign_id, user_id])
-  //     .then(futureScheduled => {
-  //       console.log(`future scheduled`, futureScheduled);
-  //       res.status(200).json(futureScheduled);
-  //     })
-  //     .catch(err => {
-  //       console.log(`future scheduled`, err);
-  //       res.status(500).json(err);
-  //     });
-  //   //get all past events
-  // } else if (scheduled === "false" && completed === "true") {
-  //   db.events
-  //     .getAllFutureEvents(campaign_id)
-  //     .then(pastEvents => {
-  //       console.log(`all past events`, pastEvents);
-  //       res.status(200).json(pastEvents);
-  //     })
-  //     .catch(err => {
-  //       res.status(500).json(err);
-  //       console.log(`past events`, err);
-  //     });
-  // }
-  // //get all past events that used was scheduled for
-  // else
-  //   db.events
-  //     .getEventsScheduledCompleted([campaign_id, user_id])
-  //     .then(attendedEvents => {
-  //       console.log(`past scheduled`, attendedEvents);
-  //       res.status(200).json(attendedEvents);
-  //     })
-  //     .catch(err => {
-  //       console.log(`past scheduled`, err);
-  //       res.status(200).json(err);
-  //     });
-
   //get all events, future **DEFAULT on page load**
 
   if (scheduled === "false" && completed === "false") {

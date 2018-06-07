@@ -30,24 +30,17 @@ class Campaigns extends Component {
     console.log(`Campaigns >>`, this.props);
     return (
       <PageContainer>
-        {this.state.showCreate ? (
-          <div>
-            <button
-              className="createCampButton"
-              onClick={e => this.createSwitch(e)}
-            >
-              Return to Campaigns
-            </button>
-            <CreateCampaign />
-          </div>
-        ) : (
-          <div>
-            <button onClick={() => this.createSwitch()}>
-              Create A Campaign
-            </button>
-            {campaignList}
-          </div>
-        )}
+        <div>
+          <button onClick={() => this.createSwitch()}>Create A Campaign</button>
+          {this.state.showCreate ? (
+            <CreateCampaign
+              user={this.props.user}
+              createSwitch={this.createSwitch}
+            />
+          ) : (
+            campaignList
+          )}
+        </div>
       </PageContainer>
     );
   }
@@ -55,37 +48,8 @@ class Campaigns extends Component {
 
 const mapStateToProps = state => {
   return {
-    campaignsList: state.campaignReducer.campaignsList
+    campaignsList: state.campaignReducer.campaignsList,
+    user: state.userReducer.user
   };
 };
 export default connect(mapStateToProps, { getAllCampaigns })(Campaigns);
-
-// const PaigeContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-
-//   overflow-y: scroll;
-
-/* & .createCampButton {
-    padding: 2vh 1vw;
-    border-radius: 6px;
-    transition: all 0.3s;
-    width: 40vw;
-    border-radius: 6px;
-    outline: none;
-    font-size: 0.75em;
-    border: solid 1px #dce8ef;
-    color: #595c63;
-    align-self: center;
-
-    &:hover {
-      box-shadow: 1px 1px 3px #dee9f9;
-      transition: 0.2s;
-    }
-    &:active {
-      background: #1f83ff;
-      color: #fdfdfd;
-    }
-  }
-`; */

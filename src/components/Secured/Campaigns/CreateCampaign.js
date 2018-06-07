@@ -1,54 +1,58 @@
 import React, { Component } from "react";
+import {
+  submitCampaign,
+  getAllCampaigns
+} from "../../../ducks/campaignReducer";
 import styled from "styled-components";
-import { PageContainer } from "../../styled/PageContainer";
-import logo from "../../../logo.png";
-
-const CreateACampaign = styled.form`
-  height: inherit;
-  width: inherit;
-  background: aliceblue;
-
-  & img {
-    height: 100px;
-    width: 200px;
+import { connect } from "react-redux";
+class CampaignForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      organization: "",
+      orglogo: "",
+      description: "",
+      type: "",
+      scope: ""
+    };
   }
-`;
-
-class CreateCampaign extends Component {
-  state = {
-    campaignname: "",
-    organization: "",
-    orglogo: "",
-    description: "",
-    type: "",
-    scope: ""
+  submitHandler = e => {
+    e.preventDefault();
+    this.props
+      .submitCampaign(
+        this.state.name,
+        this.state.organization,
+        this.state.orglogo,
+        this.state.type,
+        this.state.scope,
+        this.state.description,
+        this.props.user.user_id
+      )
+      .then(response => {
+        this.props.getAllCampaigns;
+      })
+      .then(response => {
+        this.props.createSwitch();
+      });
   };
-  userInput = e => {
+  campaignInput = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+  //multiple select functionality for campaign type. come back if have time.
 
-  handleMultipleInput = e => {
-this.setState({type:e.target.value})
-  }
-
+  // handleMultipleInput = e => {
+  //   this.setState({ type: e.target.value });
+  // };
   render() {
-    console.log(this.state);
+    console.log(this.state, this.props);
     return (
-      <PageContainer>
-        <CreateACampaign onSubmit={this.submitForm}>
-          <p>Campaign Name</p>
-          <input
-            autoFocus
-            name="campaignname"
-            value={this.state.campaignname}
-            onChange={this.userInput}
-          />
-          <p>Campaign Org</p>
-          <input
-            name="organization"
-            value={this.state.organization}
-            onChange={this.userInput}
-          />
+      <CreateCampaignForm
+        className="campaign-form"
+        onSubmit={e => this.submitHandler(e)}
+      >
+        <h1>Create a Campaign</h1>
+        <div>
           <img
             src={this.state.orglogo}
             onError={e => {
@@ -56,41 +60,168 @@ this.setState({type:e.target.value})
                 "https://discoverthegift.com/wp-content/uploads/2016/03/placeholder.jpg";
             }}
           />
-          <p>Campaign Logo</p>
+        </div>
+        <div>
+          <p>Campaign Name</p>
+          <input
+            name="name"
+            value={this.state.name}
+            placeholder="Your Campaign Name here"
+            onChange={this.campaignInput}
+          />
+          <p>Organization</p>
+          <input
+            name="organization"
+            value={this.state.organization}
+            type="text"
+            onChange={this.campaignInput}
+          />
+          <p>Organization Logo</p>
           <input
             name="orglogo"
             value={this.state.orglogo}
-            onChange={this.userInput}
+            onChange={this.campaignInput}
           />
-          <p>Campaign Description</p>
-          <textarea
-            name="description"
-            value={this.state.description}
-            onChange={this.userInput}
-          />
-          <p>Campaign Type</p>
-          <select name="type" onChange={e => this.handleMultipleInput(e)}>
+          <p>Type</p>
+          <select
+            type="select-multiple"
+            name="type"
+            value={this.state.type}
+            onChange={this.campaignInput}
+          >
             <option value="Single-Issue">Single-Issue</option>
             <option value="Candidate">Candidate</option>
             <option value="Community Organizing">Community Organizing</option>
-            <option value="Ballot Initiative">Ballot</option>
+            <option value="Ballot">Ballot</option>
             <option value="Referendem">Referendem</option>
           </select>
-          <p>Campaign Scope</p>
+          <p>Scope</p>
           <select
-            title="The size of your campaign. Will you be operating on a national, state-wide, or local scale?"
             name="scope"
+            value={this.state.scope}
+            className="scope"
+            onChange={this.campaignInput}
             size="3"
-            onChange={this.userInput}
           >
             <option value="National">National</option>
-            <option value="State-wide">State-wide</option>
+            <option value="Statewide">Statewide</option>
             <option value="Local">Local</option>
           </select>
-        </CreateACampaign>
-      </PageContainer>
+          <p>Description</p>
+          <textarea
+            name="description"
+            value={this.state.description}
+            className="description"
+            onChange={this.campaignInput}
+          />
+          <input type="submit" value="Start Your Campaign" />
+          <button onClick={this.createSwitch}>Join an Existing Campaign</button>
+        </div>
+      </CreateCampaignForm>
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    campaignsList: state.campaignReducer.campaignsList,
+    user: state.userReducer.user,
+    joined: state.campaignReducer.joined
+  };
+};
+export default connect(mapStateToProps, { submitCampaign, getAllCampaigns })(
+  CampaignForm
+);
 
-export default CreateCampaign;
+const CreateCampaignForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  /* padding: 1vh 5vw; */
+  overflow-y: scroll;
+
+  & div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  & input {
+    border: 1px solid grey;
+    width: 80vw;
+    height: 4vh;
+    margin: 0vh 0 0 0;
+    text-align: center;
+    outline: none;
+    border-radius: 4px;
+    line-height: 14px;
+    font-size: 14px;
+  }
+& img {
+max-height:30vh;
+}
+  & textarea {
+    border: 1px solid grey;
+    width: 80vw;
+    width: 70%;
+    height: 40vh;
+    margin: 1vh 0 0 0;
+    text-align: center;
+    outline: none;
+    border-radius: 4px;
+    line-height: 14px;
+    font-size: 14px;
+  }
+
+  & select {
+    border: 1px solid grey;
+    width: 70%;
+    height: 4vh;
+    margin: 1vh 0 0 0;
+    text-align: center;
+    outline: none;
+    border-radius: 4px;
+  }
+
+  @media only screen and (min-width: 1224px) {
+    display: flex;
+  flex-direction: row;
+    
+    justify-content: space-between;
+    align-items: center;
+    padding: 1vh 5vw;
+    overflow-y: scroll;
+    & div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  & input {
+    border: 1px solid grey;
+    width: 40vw;
+    height: 4vh;
+    margin: 0vh 0 0 0;
+    text-align: center;
+    outline: none;
+    border-radius: 4px;
+    line-height: 14px;
+    font-size: 14px;
+  }
+  
+  & textarea {
+    width: 40vw;
+    height: 20vh;
+    margin: 1vh 0 0 0;
+
+  }
+
+  & select {
+    border: 1px solid grey;
+    width: 40vw;
+    height: 10vh;
+  }
+  
+`;

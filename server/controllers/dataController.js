@@ -73,8 +73,52 @@ const getChartData = (req, res) => {
     });
 };
 
+const addContact = (req, res) => {
+  const db = req.app.get("db");
+  const {
+    firstName,
+    lastName,
+    address,
+    city,
+    stateName,
+    zip,
+    phone,
+    email,
+    dateofbirth,
+    allowsContact,
+    user_id,
+    event_id
+  } = req.body;
+  console.log(req.body);
+
+  db.data
+    .addContact([
+      firstName,
+      lastName,
+      address,
+      city,
+      stateName,
+      zip,
+      phone,
+      email,
+      dateofbirth,
+      allowsContact,
+      user_id,
+      event_id
+    ])
+    .then(contactList => {
+      console.log(`updatedContactList:`, contactList);
+      res.status(200).json(contactList);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+};
+
 module.exports = {
   getVolunteers,
   getContacts,
-  getChartData
+  getChartData,
+  addContact
 };

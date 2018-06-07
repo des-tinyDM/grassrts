@@ -12,6 +12,7 @@ const GET_VOLS = "GET_VOLS";
 const GET_CONTACTS = "GET_CONTACTS";
 const GET_CHART = "GET_CHART";
 const USER_CHART = "USER_CHART";
+const ADD_CONTACT = "ADD_CONTACT";
 
 export function getVols(campaign_id, event_id) {
   return {
@@ -66,6 +67,44 @@ export function getUserChart(user_id) {
     })
   };
 }
+export function addContact(
+  firstName,
+  lastName,
+  address,
+  city,
+  stateName,
+  zip,
+  phone,
+  email,
+  dateofbirth,
+  allows_contact,
+  user_id,
+  event_id
+) {
+  return {
+    type: ADD_CONTACT,
+    payload: axios
+      .post(`/api/data/contacts/add`, {
+        firstName,
+        lastName,
+        address,
+        city,
+        stateName,
+        zip,
+        phone,
+        email,
+        dateofbirth,
+        allows_contact,
+        user_id,
+        event_id
+      })
+      .then(contactList => {
+        console.log(`retreiving contacts:`, contactList);
+        return contactList.data;
+      })
+      .catch(err => console.log(`retreiving contacts err:`, err))
+  };
+}
 
 export default function dataReducer(state = initialState, action) {
   switch (action.type) {
@@ -73,6 +112,7 @@ export default function dataReducer(state = initialState, action) {
     case `${GET_CONTACTS}_PENDING`:
     case `${GET_CHART}_PENDING`:
     case `${USER_CHART}_PENDING`:
+    case `${ADD_CONTACT}_PENDING`:
       return Object.assign({}, state, { isLoading: true });
 
     case `${GET_VOLS}_FULFILLED`:
@@ -94,6 +134,11 @@ export default function dataReducer(state = initialState, action) {
       return Object.assign({}, state, {
         isLoading: false,
         userChart: action.payload
+      });
+    case `${ADD_CONTACT}_PENDING`:
+      return Object.assign({}, state, {
+        isLoading: false,
+        contactList: action.payload
       });
     default:
       return state;
