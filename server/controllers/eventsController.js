@@ -2,7 +2,7 @@ const getEvents = (req, res) => {
   const db = req.app.get("db");
   const { campaign_id, scheduled, completed, user_id } = req.query;
 
-  console.log(req.query);
+  console.log(`get events`, req.query);
 
   //get all events, future **DEFAULT on page load**
 

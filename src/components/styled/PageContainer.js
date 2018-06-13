@@ -10,6 +10,10 @@ export const PageContainer = styled.div`
   justify-content: center;
   position: relative;
 
+  & .contactsContainer {
+    height: 30vh;
+    overflow-y: scroll;
+  }
   &#Campaigns {
     div.campaignList {
       position: absolute;

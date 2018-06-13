@@ -17,7 +17,8 @@ const {
   getAllCampaigns,
   createCampaign,
   getCampaignsJoined,
-  updateCampaign
+  updateCampaign,
+  joinCampaign
 } = require(`${__dirname}/controllers/campaignController`);
 
 const {
@@ -52,7 +53,7 @@ const port = 3001;
 
 const app = express();
 
-app.use(express.static(`${__dirname}/../build`));
+// app.use(express.static(`${__dirname}/../build`));
 
 massive(process.env.CONNECTION_STRING)
   .then(db => app.set("db", db))
@@ -110,7 +111,7 @@ passport.deserializeUser((user, done) => {
 app.get(
   `/auth`,
   passport.authenticate("auth0", {
-    successRedirect: "http://localhost:3001/",
+    successRedirect: "http://localhost:3000/",
     failureRedirect: "http://localhost:3001/auth"
   })
 );
@@ -134,14 +135,15 @@ app.get(`/api/users/notes/:user_id`, getNotes);
 app.post(`/api/campaigns/add`, createCampaign);
 app.post(`/api/data/contacts/add`, addContact);
 app.post(`/api/users/notes`, addNote);
+app.post(`/api/campaign/join/:campaign_id`, joinCampaign);
 
 app.put(`/api/submitprofile/:user_id`, submitProfile);
 app.put(`/api/campaigns/edit`, updateCampaign);
 
-const path = require("path");
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../build/index.html"));
-});
+// const path = require("path");
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../build/index.html"));
+// });
 
 app.listen(port, () => {
   console.log(`Comin' at you from ${port}`);

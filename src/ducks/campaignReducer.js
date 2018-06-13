@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const GET_CAMPAIGNS = "GET_CAMPAIGNS";
+const JOIN_CAMPAIGN = "JOIN_CAMPAIGN";
 const CREATE_CAMPAIGN = "CREATE_CAMPAIGN";
 const UPDATE_CAMPAIGN = "UPDATE_CAMPAIGN";
-const JOIN_CAMPAIGN = "JOIN_CAMPAIGN";
 const GET_JOINED = "GET_JOINED";
 
 const initialState = {
@@ -24,7 +24,17 @@ export function getAllCampaigns() {
       .catch(err => err)
   };
 }
-
+export function joinCampaign(campaign_id, user_id) {
+  return {
+    type: JOIN_CAMPAIGN,
+    payload: axios
+      .post(`/api/campaign/join/${campaign_id}`, { user_id })
+      .then(joined => {
+        return joined.data;
+      })
+      .catch(err => err)
+  };
+}
 export function submitCampaign(
   name,
   organization,
@@ -82,15 +92,6 @@ export function updateCampaign(
       .then(joined => {
         return joined.data;
       })
-  };
-}
-export function joinCampaign(campaign_id, userid, role) {
-  return {
-    type: JOIN_CAMPAIGN,
-    payload: axios
-      .post(`/api/campaign/join/${campaign_id}`, { userid, role })
-      .then(joined => joined.data)
-      .catch(err => err)
   };
 }
 export function getJoinedCampaign(user_id) {

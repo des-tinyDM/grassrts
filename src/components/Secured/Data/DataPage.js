@@ -54,5 +54,15 @@ export default connect(
 const Contacts = styled.div`
   display: flex;
   flex-direction: row;
-  width: 30vw;
+  width: 40vw;
+  overflow-y: scroll;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: start;
+  & p {
+    width: 30%;
+  }
+  & h2 {
+    width: 36%;
+  }
 `;

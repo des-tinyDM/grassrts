@@ -34,6 +34,9 @@ const SideEvent = styled.div`
       align-items: center;
       flex-direction: column;
     }
+    & h2 {
+      margin: 2vh 0 2vh 0;
+    }
     & div h1 {
       background: #003459;
       color: white;
@@ -80,7 +83,7 @@ const MainEvent = styled.div`
     height: 92vh;
 
     & h2 {
-      margin: 5vh auto 5vh 5vw;
+      margin: 5vh auto 2vh 5vw;
       font-size: 2rem;
       width: 100%;
     }
@@ -207,4 +210,9 @@ const mapStateToProps = state => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, { getVols })(FullEventPage));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { getVols }
+  )(FullEventPage)
+);

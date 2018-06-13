@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import { joinCampaign } from "../../../ducks/campaignReducer";
+import { withRouter } from "react-router-dom";
 
 const Campaign = styled.div`
   display: flex;
@@ -31,6 +34,7 @@ const Campaign = styled.div`
 `;
 
 const CampaignCard = props => {
+  console.log(props.campaign_id, props.user.user_id);
   return (
     <Campaign>
       <h1>{props.name}</h1>
@@ -38,9 +42,27 @@ const CampaignCard = props => {
       <h2>{props.organization}</h2>
       <img src={props.orglogo} />
       <p>{props.description}</p>
-      <button>JOIN</button>
+      <button
+        onClick={() =>
+          props
+            .joinCampaign(props.campaign_id, props.user.user_id)
+            .then(() => props.history.push(`/`))
+        }
+      >
+        JOIN
+      </button>
     </Campaign>
   );
 };
-
-export default CampaignCard;
+const mapStateToProps = state => {
+  return {
+    joined: state.campaignReducer.joined,
+    user: state.userReducer.user
+  };
+};
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { joinCampaign }
+  )(CampaignCard)
+);

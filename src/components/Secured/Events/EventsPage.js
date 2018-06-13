@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
+import styled from "styled-components";
 import { EventCard } from "./Events";
 import { getEvents } from "../../../ducks/eventsReducer";
 import { PageContainer } from "../../styled/PageContainer";
@@ -51,23 +51,6 @@ class EventsPage extends Component {
     console.log(`Events Page:`, this.props, this.state);
     return (
       <PageContainer>
-        <span>Scheduled Events</span>
-
-        <input
-          name="scheduled"
-          type="checkbox"
-          defaultChecked={this.state.scheduled}
-          value={this.state.scheduled}
-          onChange={this.toggleCheckbox.bind(this, "scheduled")}
-        />
-        <span>Completed</span>
-        <input
-          name="completed"
-          type="checkbox"
-          defaultChecked={this.state.completed}
-          value={this.state.completed}
-          onChange={this.toggleCheckbox.bind(this, "completed")}
-        />
         {events[0] && eventArr}
         {!events[0] &&
           this.state.scheduled &&
@@ -89,6 +72,24 @@ class EventsPage extends Component {
         {!events[0] &&
           !this.state.scheduled &&
           !this.state.completed && <h1>There are no upcoming events.</h1>}
+        <SearchNav>
+          <span>Scheduled Events</span>
+          <input
+            name="scheduled"
+            type="checkbox"
+            defaultChecked={this.state.scheduled}
+            value={this.state.scheduled}
+            onChange={this.toggleCheckbox.bind(this, "scheduled")}
+          />
+          <span>Completed</span>
+          <input
+            name="completed"
+            type="checkbox"
+            defaultChecked={this.state.completed}
+            value={this.state.completed}
+            onChange={this.toggleCheckbox.bind(this, "completed")}
+          />
+        </SearchNav>
       </PageContainer>
     );
   }
@@ -100,4 +101,15 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { getEvents })(EventsPage);
+export default connect(
+  mapStateToProps,
+  { getEvents }
+)(EventsPage);
+const SearchNav = styled.nav`
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  background: navy;
+  height: 5vh;
+  color: white;
+`;

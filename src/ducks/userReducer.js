@@ -13,7 +13,6 @@ export function getUser() {
       .then(results => {
         return results.data;
       })
-
       .catch(err => console.log(err))
   };
 }

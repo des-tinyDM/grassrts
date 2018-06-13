@@ -77,7 +77,7 @@ const updateCampaign = (req, res) => {
     vrGoal,
     commitGoal
   } = req.body;
-  console.log(req.body);
+  console.log(`from updateCampaign`, req.body);
   db.campaign
     .updateCampaign([
       campaign_id,
@@ -92,7 +92,7 @@ const updateCampaign = (req, res) => {
     ])
     .then(campaign => {
       res.status(200).json(campaign);
-      console.log(campaign);
+      console.log(`updating campaign`, campaign);
     })
     .catch(err => {
       console.log(err);
@@ -100,9 +100,27 @@ const updateCampaign = (req, res) => {
     });
 };
 
+const joinCampaign = (req, res) => {
+  console.log("joining campaign..");
+  const db = req.app.get("db");
+  const { campaign_id } = req.params;
+  const { user_id } = req.body;
+
+  db.campaign
+    .joinCampaign(campaign_id, user_id)
+    .then(joined => {
+      console.log(`joinCampaign`, joined);
+      res.status(200).json(joined);
+    })
+    .catch(err => {
+      console.log(`join Campaign`, err);
+      res.status(500).json(err);
+    });
+};
 module.exports = {
   getAllCampaigns,
   createCampaign,
   getCampaignsJoined,
-  updateCampaign
+  updateCampaign,
+  joinCampaign
 };

@@ -25,6 +25,8 @@ class Campaigns extends Component {
           organization={e.organization}
           orglogo={e.orglogo}
           description={e.description}
+          campaign_id={e.campaign_id}
+          user={this.props.user}
         />
       );
     });

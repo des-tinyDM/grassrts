@@ -230,7 +230,9 @@ class FullCampaignPage extends Component {
             </div>
             <div className="membersContainer">
               <h1>Campaign Members:</h1>
-              <div className="info">{campaignMembers}</div>
+              <div className="info">
+                {this.props.volList[0] && campaignMembers}
+              </div>
             </div>
           </div>
         </div>
